@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CapstoneProjectNew</string>
+    <string name="settings">Pengaturan</string>
+    <string name="music_library">Librari Musik</string>
+    <string name="fahmi_idris">Fahmi Idris</string>
+    <string name="fahmiidris_apps_ipb_ac_id">fahmiidris@apps.ipb.ac.id</string>
+    <string name="language">Bahasa</string>
+    <string name="english">Inggris</string>
+    <string name="select">pilih</string>
+    <string name="dark_mode">Mode Malam</string>
+    <string name="light_mode">Mode Siang</string>
+    <string name="voice_button">Tombol suara</string>
+    <string name="title_saved_sound">Musik yang Tersimpan</string>
+    <string name="how_are_you_today">Bagaimana kabarmu hari ini?</string>
+    <string name="title_setting">Pengaturan</string>
+    <string name="favorite">favorit</string>
+    <string name="play">mainkan</string>
+</resources>
