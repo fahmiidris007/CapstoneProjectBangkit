@@ -1,4 +1,4 @@
-package com.c23ps266.capstoneprojectnew.ui
+package com.c23ps266.capstoneprojectnew.util
 
 import android.content.Context
 import org.tensorflow.lite.support.label.Category
