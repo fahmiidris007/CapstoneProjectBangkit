@@ -8,51 +8,49 @@ import org.tensorflow.lite.task.text.nlclassifier.NLClassifier.createFromFileAnd
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 // https://www.tensorflow.org/lite/inference_with_metadata/task_library/nl_classifier
-class TextClassifierHelper {
-    class TextClassifierHelper(
-        context: Context,
-        tfLiteAssetName: String,
-        private val listener: TextResultsListener,
-    ) {
-        private val classifier: NLClassifier
-        private val executor: ScheduledThreadPoolExecutor
+class TextClassifierHelper(
+    context: Context,
+    tfLiteAssetName: String,
+    private val listener: TextResultsListener,
+) {
+    private val classifier: NLClassifier
+    private val executor: ScheduledThreadPoolExecutor
 
-        init {
-            val baseOptions = BaseOptions.builder().run {
-                useNnapi()          // or should I not?
-                build()
-            }
-            val options = NLClassifier.NLClassifierOptions.builder().run {
-                setBaseOptions(baseOptions)
-                build()
-            }
-            classifier = createFromFileAndOptions(context, tfLiteAssetName, options)
-
-            executor = ScheduledThreadPoolExecutor(1)
+    init {
+        val baseOptions = BaseOptions.builder().run {
+            useNnapi()          // or should I not?
+            build()
         }
+        val options = NLClassifier.NLClassifierOptions.builder().run {
+            setBaseOptions(baseOptions)
+            build()
+        }
+        classifier = createFromFileAndOptions(context, tfLiteAssetName, options)
+
+        executor = ScheduledThreadPoolExecutor(1)
+    }
+
+    /**
+     * Runs in other thread using ScheduledThreadPoolExecutor
+     */
+    fun classify(text: String) = executor.execute {
+        if (text.isBlank()) {
+            listener.onError("Text can't be blank!")
+        } else {
+            val results = classifier.classify(text)
+            listener.onResult(results)
+        }
+    }
+
+    interface TextResultsListener {
+        /**
+         * If you want to update UI from this function, you need to do that from Activity#runOnUiThread method
+         */
+        fun onResult(results: List<Category>)
 
         /**
-         * Runs in other thread using ScheduledThreadPoolExecutor
+         * If you want to update UI from this function, you need to do that from Activity#runOnUiThread method
          */
-        fun classify(text: String) = executor.execute {
-            if (text.isBlank()) {
-                listener.onError("Text can't be blank!")
-            } else {
-                val results = classifier.classify(text)
-                listener.onResult(results)
-            }
-        }
-
-        interface TextResultsListener {
-            /**
-             * If you want to update UI from this function, you need to do that from Activity#runOnUiThread method
-             */
-            fun onResult(results: List<Category>)
-
-            /**
-             * If you want to update UI from this function, you need to do that from Activity#runOnUiThread method
-             */
-            fun onError(message: String)
-        }
+        fun onError(message: String)
     }
 }
