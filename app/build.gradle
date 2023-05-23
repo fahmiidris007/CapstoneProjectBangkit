@@ -37,6 +37,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src/main/assets'
+            }
+        }
+        androidTest {
+            assets {
+                srcDirs 'src/androidTest/assets'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -61,6 +73,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
 
-
-
+    // tensorflow lite
+    implementation 'org.tensorflow:tensorflow-lite-task-text:0.4.0'  // Task Vision (NNAPI included)
+    implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'// GPU delegate plugin
 }
