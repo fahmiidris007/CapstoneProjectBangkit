@@ -16,4 +16,9 @@
     <string name="title_setting">Pengaturan</string>
     <string name="favorite">favorit</string>
     <string name="play">mainkan</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="select_language">Pilih bahasa</string>
+    <string name="cancel">Batal</string>
+    <string name="login_image">Gambar login</string>
+    <string name="let_s_login">Ayo Login</string>
 </resources>

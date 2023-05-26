@@ -18,4 +18,6 @@
     <string name="indonesia">Indonesia</string>
     <string name="select_language">Select Language</string>
     <string name="cancel">Cancel</string>
+    <string name="login_image">Login Image</string>
+    <string name="let_s_login">Let\'s Login</string>
 </resources>
