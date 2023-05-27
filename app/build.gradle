@@ -81,4 +81,9 @@ dependencies {
     // tensorflow lite
     implementation 'org.tensorflow:tensorflow-lite-task-text:0.4.0'  // Task Vision (NNAPI included)
     implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'// GPU delegate plugin
+
+    // retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
 }
