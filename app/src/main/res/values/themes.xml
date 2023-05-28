@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.CapstoneProjectNew" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,7 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-<!--        <item name="android:queryHint">@color/grey</item>-->
     </style>
     <style name="ToolbarTitle">
         <item name="android:textSize">20sp</item>
@@ -25,9 +24,6 @@
     <style name="BackgroundColor">
         <item name="android:background">@color/light_orange</item>
     </style>
-    <style name="BottomColor">
-        <item name="cardBackgroundColor">@color/cream</item>
-    </style>
     <style name="CardColor">
         <item name="cardBackgroundColor">@color/light_orange</item>
     </style>
@@ -36,6 +32,11 @@
     </style>
     <style name="TextQuery">
         <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/orange</item>
+        <item name="itemTextColor">@color/orange</item>
+        <item name="android:background">@color/cream</item>
     </style>
 
 </resources>
