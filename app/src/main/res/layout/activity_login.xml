@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="@color/black"/>
+        style="@style/Text"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInButton"
