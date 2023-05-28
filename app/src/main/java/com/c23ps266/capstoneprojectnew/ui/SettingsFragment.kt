@@ -6,33 +6,36 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
-import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.c23ps266.capstoneprojectnew.R
-import com.c23ps266.capstoneprojectnew.databinding.ActivitySettingBinding
-import java.util.*
+import com.c23ps266.capstoneprojectnew.databinding.FragmentSettingsBinding
+import java.util.Locale
 
-class SettingActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivitySettingBinding
+class SettingsFragment : Fragment() {
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
     private lateinit var modeSwitch: SwitchCompat
     private var darkMode: Boolean = false
     private var editor: SharedPreferences.Editor? = null
     private var sharedPref: SharedPreferences? = null
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySettingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setDarkMode()
         setLanguage()
@@ -56,7 +59,7 @@ class SettingActivity : AppCompatActivity() {
     private fun showLanguageSelectionDialog() {
         val languages = arrayOf(getString(R.string.english), getString(R.string.indonesia))
 
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.select_language))
             .setItems(languages) { _, which ->
                 val selectedLanguage = if (which == 0) "en" else "in"
@@ -75,16 +78,16 @@ class SettingActivity : AppCompatActivity() {
 
         resources.updateConfiguration(configuration, resources.displayMetrics)
 
-        val intent = Intent()
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("LANGUAGE_CHANGED", true)
-        setResult(Activity.RESULT_OK, intent)
-        finish()
+        startActivity(intent)
+        requireActivity().finish()
     }
 
-
     private fun setDarkMode() {
-        modeSwitch = findViewById(R.id.mode_switch)
-        sharedPref = getSharedPreferences("MODE", Context.MODE_PRIVATE)
+        modeSwitch = binding.modeSwitch
+        sharedPref = requireActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE)
         darkMode = sharedPref?.getBoolean("DARK_MODE", false)!!
         if (darkMode) {
             modeSwitch.isChecked = true
@@ -93,7 +96,7 @@ class SettingActivity : AppCompatActivity() {
             modeSwitch.isChecked = false
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-        modeSwitch.setOnCheckedChangeListener { compoundButton, state ->
+        modeSwitch.setOnCheckedChangeListener { _, state ->
             if (darkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editor = sharedPref?.edit()
@@ -106,17 +109,8 @@ class SettingActivity : AppCompatActivity() {
             editor?.apply()
             val intent = Intent()
             intent.putExtra("DARK_MODE_CHANGED", true)
-            setResult(Activity.RESULT_OK, intent)
+            requireActivity().setResult(Activity.RESULT_OK, intent)
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 }
