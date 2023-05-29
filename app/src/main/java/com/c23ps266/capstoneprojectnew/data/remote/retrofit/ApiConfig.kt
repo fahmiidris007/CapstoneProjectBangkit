@@ -12,7 +12,7 @@ object ApiConfig {
     /**
      * Placeholder. TODO: get the API detail from CC
      */
-    const val BASE_URL = "example.com"
+    const val BASE_URL = "https://example.com"
 
     fun getApiService(): ApiService {
         val clientBuilder = OkHttpClient.Builder()
