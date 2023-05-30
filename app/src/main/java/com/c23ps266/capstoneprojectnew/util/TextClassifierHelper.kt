@@ -1,56 +1,86 @@
 package com.c23ps266.capstoneprojectnew.util
 
 import android.content.Context
+import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.label.Category
-import org.tensorflow.lite.task.core.BaseOptions
-import org.tensorflow.lite.task.text.nlclassifier.NLClassifier
-import org.tensorflow.lite.task.text.nlclassifier.NLClassifier.createFromFileAndOptions
+import java.io.FileInputStream
+import java.io.IOException
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
-// https://www.tensorflow.org/lite/inference_with_metadata/task_library/nl_classifier
 class TextClassifierHelper(
     context: Context,
-    tfLiteAssetName: String,
-    private val listener: TextResultsListener,
+    private val modelDetail: ModelDetail,
+    onLoadCompleted: TextClassifierHelper.() -> Unit,
 ) {
-    private val classifier: NLClassifier
-    private val executor: ScheduledThreadPoolExecutor
+    private lateinit var labels: List<String>
+    private lateinit var interpreter: Interpreter
+
+    private val executor: ScheduledThreadPoolExecutor = ScheduledThreadPoolExecutor(1)
 
     init {
-        val baseOptions = BaseOptions.builder().run {
-            useNnapi()          // or should I not?
-            build()
-        }
-        val options = NLClassifier.NLClassifierOptions.builder().run {
-            setBaseOptions(baseOptions)
-            build()
-        }
-        classifier = createFromFileAndOptions(context, tfLiteAssetName, options)
-
-        executor = ScheduledThreadPoolExecutor(1)
-    }
-
-    /**
-     * Runs in other thread using ScheduledThreadPoolExecutor
-     */
-    fun classify(text: String) = executor.execute {
-        if (text.isBlank()) {
-            listener.onError("Text can't be blank!")
-        } else {
-            val results = classifier.classify(text)
-            listener.onResult(results)
+        Log.d(TAG, "INIT")
+        CoroutineScope(Dispatchers.IO).launch {
+            val (modelFileName,  labelJson) = modelDetail
+            labels = Gson().fromJson(loadJSONFromAsset(context, labelJson), Array<String>::class.java).toList()
+            Log.d(TAG, "INIT LABELS: $labels")
+            interpreter = Interpreter(loadModelFile(context, modelFileName)).also {
+                val sigKey = it.signatureKeys[0]
+                val input = it.getSignatureInputs(sigKey).joinToString(" - ")
+                val output = it.getSignatureOutputs(sigKey).joinToString(" - ")
+                Log.d(TAG, "INIT MODEL : sigKey = $sigKey | input = $input | output = $output")
+            }
+            CoroutineScope(Dispatchers.Main).launch { this@TextClassifierHelper.onLoadCompleted() }
         }
     }
 
-    interface TextResultsListener {
-        /**
-         * If you want to update UI from this function, you need to do that from Activity#runOnUiThread method
-         */
-        fun onResult(results: List<Category>)
+    @Throws(IOException::class)
+    private fun loadModelFile(context: Context, modelAssetFileName: String): MappedByteBuffer {
+        val assetFileDescriptor = context.assets.openFd(modelAssetFileName)
+        val fileInputStream = FileInputStream(assetFileDescriptor.fileDescriptor)
+        val fileChannel = fileInputStream.channel
+        val startOffset = assetFileDescriptor.startOffset
+        val declaredLength = assetFileDescriptor.declaredLength
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
+    }
 
-        /**
-         * If you want to update UI from this function, you need to do that from Activity#runOnUiThread method
-         */
-        fun onError(message: String)
+    fun classify(message: String, onResult: (result: List<Category>) -> Unit) = executor.execute {
+        Log.d(TAG, "Message: $message")
+
+        val inputs = message
+        val outputs: Array<FloatArray> = arrayOf(FloatArray(labels.size))
+        interpreter.run(inputs, outputs)
+
+        val results = outputs[0].mapIndexed { index, fl ->
+            Category(labels[index], fl)
+        }
+        CoroutineScope(Dispatchers.Main).launch { onResult(results) }
+    }
+
+    data class ModelDetail(
+        val modelFileName: String,
+        val labelJsonFileName: String,
+        val inputMaxLen: Int,
+    )
+
+    companion object {
+        private const val TAG = "TextClassifierHelper"
+
+        @Throws(IOException::class)
+        private fun loadJSONFromAsset(context: Context, filename: String): String {
+            val inputStream = context.assets.open(filename)
+            val size = inputStream.available()
+            val buffer = ByteArray(size)
+            inputStream.read(buffer)
+            inputStream.close()
+            return String(buffer)
+        }
     }
 }
