@@ -8,7 +8,7 @@ import org.tensorflow.lite.task.text.nlclassifier.NLClassifier.createFromFileAnd
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 // https://www.tensorflow.org/lite/inference_with_metadata/task_library/nl_classifier
-class TextClassifierHelper(
+class NLClassifierHelper(
     context: Context,
     tfLiteAssetName: String,
     private val listener: TextResultsListener,
