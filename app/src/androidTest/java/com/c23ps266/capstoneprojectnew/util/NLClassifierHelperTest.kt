@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.tensorflow.lite.support.label.Category
 
 @RunWith(AndroidJUnit4::class)
-class TextClassifierHelperTest {
+class NLClassifierHelperTest {
     // stolen from https://www.tensorflow.org/lite/examples/text_classification/overview
     // https://storage.googleapis.com/download.tensorflow.org/models/tflite/text_classification/text_classification_v2.tflite
     private val modelName = "dummy_movie_review.tflite"
@@ -25,10 +25,10 @@ I do really like the idea of having a deaf friend. I've often thought about what
 
     @Test
     fun textClassifierShouldSuccessAndHaveConsistentResult() {
-        val textClassifierHelper = TextClassifierHelper(
+        val textClassifierHelper = NLClassifierHelper(
             context = InstrumentationRegistry.getInstrumentation().context,
             tfLiteAssetName = modelName,
-            listener = object : TextClassifierHelper.TextResultsListener {
+            listener = object : NLClassifierHelper.TextResultsListener {
                 override fun onResult(results: List<Category>) {
                     val (negativeScore, positiveScore) = results.map { it.score }
 
