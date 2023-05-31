@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "calmind-33a00",
+  "private_key_id": "f819f31401f2283e0d638532177454eabe9d5a8e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQCN8gT9pVtTABwF\nFOxIUAAMNkvDJ+lHIxIHFKspUiS/UUvSyWnQ9ZsqOi7zvNnsm5qYEdXVHd+FtAmn\nDly7wT+iAWSBEinRuH+uhGXmvlSjMDBir4XZoPQBZ0I76aFcoq4YGu8MAomowjaz\n1D0io6KXe73WXhkbhppTU+j8aCHAO0ig/dw7tvB+SXnoHDW9WrpF/gkAxnnnMnSd\neeQhtfDomGTRohWDHNOhaMso1T8OTLqoJCNGrAboyMmzWEkRhwUPPj5/hCg2ok7g\nqlw8ukA33zPg15XKDcHBxHUmCJ8ipd63fNwnueVNX/RXwDCcBH6jpcBMOiAf+9sZ\n8aH8VSjpAgMBAAECgf977E9vIm4YiH/t79ZZS36/Kqf6OV3wPS4AAItuB8kNPmx0\nGmPHiqVsuF9FbBrV9wOAwBFvfiUnFYdX0bIkORLU3WJhTPo1nl3afrx4NrKtxeR4\nQ8UXuu1MTFoG9HFr7psPcHRCh/Sm4OfhF+pH05Sfq+iQvpYs8dbJ6Pf/ZOoSaGKX\nBPRzCqT9mdA4Jye2JKk4sQjIFWHlLZss6EKsx1WEo5L4tD+HGpQhHOaHC2kSL5ux\nXZW0QZGRz2gQmUUQC8BRCQWVATgHEvrOzy39k1i9WFPhR6kAndJt2YGFu5dPF6La\nWdBhXEn4JK8AqRq5lOopClHPfn1VMpjuWIGYed8CgYEAwk+OGzS+XKewDOlKxssu\no4AX0B88dCkLD0f1h5FxJqB/SRvUdvhmruxd0wX4RoH6t1mDwQ/ZplhicRCrub7P\nWu/bNeT7L4yLCe/eJMW7Vfm0wYEWMUVSBL58SgFevh38rhSZWDNF9jbSaKdF71Z3\nD8dJ3oAsk3t38URL+4XF4GMCgYEAuwKDLLtgs997S/v+P5ELBJn4QYCd4R0nZO3X\nekALglp0or4TPOqF6gYl2jHRA96uA3IqFol5S5LUVVekuzyXzlxWnoS942/pcb82\nwSTOa+LiyAW3nFIErFojBFiBqNhaOCToeobdsNukR17CSyOMs07zrCIsIb6lNdtw\nddmohUMCgYA8PmwhtT2b/oWPyzja353rJUi8xyJ4JU1/hGD0kjxRrIsqQI2kASnc\n6/2+8mfifGQeOoul7OMfNuH2iiOj6Cvj1t/RGthiCqIFB7CJGCEX696F7B7UUdi3\nDdP9IeWc7jEsS8irVuJHDwI3Xj1JkjZB1xjo+jZX13z9eZ5RMk2CXwKBgQCbtm7U\nyzys6RN35F4CPdonvbB5kgdjjuvjXSsDDtrGcl0VuSC5oylYAEB6WuqHx12rXt7u\nnw9RPvPwD6cJhF1+pWI2YZ7fBqshXC7SSbxbFrLwC9qjnaNogzEPCEcF+Qe+IfU1\nOKDVBz3Vc3BiMjqQftfkZxvKCTz1CD+u0UpBkwKBgFEngcueSoZppDSoc0HaFBCc\nnMhZI93D22Rx0DpxHj3d/RTLLSr0h+I/7JGaWzUtuVq5DO3kaTexTVe++IkngK/V\nMceZ+QWMQZtBreyphQGB0IXduQLC3X+nKLqq5CJ5DT1sww7Akvak2vundazvdhZl\nFdA4zhHgTUYZ0zTpFko8\n-----END PRIVATE KEY-----\n",
+  "client_email": "calmind-api@calmind-33a00.iam.gserviceaccount.com",
+  "client_id": "105876550499648410476",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/calmind-api%40calmind-33a00.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

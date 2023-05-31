@@ -1,0 +1,24 @@
+{
+  "name": "calmind",
+  "version": "1.0.0",
+  "description": "Capstone PS-266",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheWiseMan25/CC-Capstone-Bangkit.git"
+  },
+  "author": "Gilang Setyawan Yoga Pratama and Nabil Mafaza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheWiseMan25/CC-Capstone-Bangkit/issues"
+  },
+  "homepage": "https://github.com/TheWiseMan25/CC-Capstone-Bangkit#readme",
+  "dependencies": {
+    "@google-cloud/storage": "^6.10.1",
+    "@hapi/hapi": "^21.3.2"
+  }
+}
