@@ -17,8 +17,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setNavigationTabs()
-
-
     }
 
     private fun setNavigationTabs() {

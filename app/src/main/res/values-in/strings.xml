@@ -22,4 +22,6 @@
     <string name="home">Rumah</string>
     <string name="library">Koleksi</string>
     <string name="title_library">Koleksi Suara</string>
+    <string name="logout">Keluar</string>
+
 </resources>

@@ -12,7 +12,9 @@ class MainViewModel(
 
     private val emotionInput = MutableLiveData<String>()
     val submitStatus = emotionInput.switchMap { repository.submitEmotion(it) }
-    fun submitEmotion(emotion: String) { emotionInput.value = emotion }
+    fun submitEmotion(emotion: String) {
+        emotionInput.value = emotion
+    }
     fun getUserData(): UserModel? = repository.getUser()?.run { UserModel(displayName, email) }
     fun signOut() = repository.signOut()
 }
