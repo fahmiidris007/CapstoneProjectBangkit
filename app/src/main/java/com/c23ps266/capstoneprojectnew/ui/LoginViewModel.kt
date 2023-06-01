@@ -7,4 +7,5 @@ class LoginViewModel(
     private val repository: AppRepository,
 ) : ViewModel() {
     val signIn = repository.prepareSignIn
+    fun isLoggedIn() = repository.getUser() != null
 }
