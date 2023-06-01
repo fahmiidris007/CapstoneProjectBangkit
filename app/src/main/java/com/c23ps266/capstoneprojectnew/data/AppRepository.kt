@@ -1,19 +1,42 @@
 package com.c23ps266.capstoneprojectnew.data
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
+import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.data.remote.retrofit.ApiService
 import com.c23ps266.capstoneprojectnew.util.FirebaseAuthHelper
+import retrofit2.HttpException
 
 class AppRepository constructor(
     private val apiService: ApiService,
     private val firebaseAuthHelper: FirebaseAuthHelper,
 ) {
-    val submitEmotion = apiService::submitEmotion
-
     val prepareSignIn = firebaseAuthHelper::prepareSignIn
     val signOut = firebaseAuthHelper.auth::signOut
     fun getUser() = firebaseAuthHelper.auth.currentUser
 
+    fun submitEmotion(emotion: String): LiveData<RequestResult<List<String>>> = liveData {
+        emit(RequestResult.Loading)
+
+        try {
+            val response = apiService.submitEmotion(emotion)
+            val data = response.toList()
+            if (data.isEmpty()) throw IllegalStateException("Invalid emotion")
+            emitSource(MutableLiveData(RequestResult.Success(data)))
+        } catch (e: HttpException) {
+            Log.d(TAG, e.message.toString())
+            emit(RequestResult.Error(e.message.toString()))
+        } catch (e: Exception) {
+            Log.d(TAG, e.message.toString())
+            emit(RequestResult.Error(e.message.toString()))
+        }
+    }
+
     companion object {
+        const val TAG = "AppRepository"
+
         @Volatile
         private var INSTANCE: AppRepository? = null
 
