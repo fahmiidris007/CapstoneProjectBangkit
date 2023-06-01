@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.c23ps266.capstoneprojectnew.R
 import com.c23ps266.capstoneprojectnew.databinding.FragmentSettingsBinding
 import java.util.Locale
@@ -20,6 +21,7 @@ import java.util.Locale
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: MainViewModel by viewModels { ViewModelFactory.getInstance(requireActivity()) }
     private lateinit var modeSwitch: SwitchCompat
     private var darkMode: Boolean = false
     private var editor: SharedPreferences.Editor? = null
@@ -39,6 +41,7 @@ class SettingsFragment : Fragment() {
 
         setDarkMode()
         setLanguage()
+        setLogout()
     }
 
     private fun setLanguage() {
@@ -110,6 +113,16 @@ class SettingsFragment : Fragment() {
             val intent = Intent()
             intent.putExtra("DARK_MODE_CHANGED", true)
             requireActivity().setResult(Activity.RESULT_OK, intent)
+        }
+    }
+
+    private fun setLogout() {
+        binding.logout.setOnClickListener {
+            viewModel.signOut()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            requireActivity().finish()
         }
     }
 

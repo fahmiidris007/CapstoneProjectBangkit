@@ -59,7 +59,7 @@
                 style="@style/Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="52dp"
+                android:layout_marginTop="40dp"
                 android:gravity="center"
                 android:text="@string/fahmi_idris"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -69,12 +69,20 @@
                 style="@style/Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
                 android:gravity="center"
                 android:text="@string/fahmiidris_apps_ipb_ac_id"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
-                />
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/email" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
