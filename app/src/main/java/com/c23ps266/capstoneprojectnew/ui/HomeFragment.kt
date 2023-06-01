@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
 import java.util.Locale
 
@@ -23,6 +24,9 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: MainViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
     private var sharedPref: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
     private val REQUEST_CODE_SETTINGS = 1
@@ -44,6 +48,7 @@ class HomeFragment : Fragment() {
         setDarkMode(darkMode)
         setSearch()
         setSpeech()
+        setDisplayName()
     }
 
     private fun setSearch() {
@@ -125,5 +130,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-
+    private fun setDisplayName() {
+        binding.tvUsername.text = viewModel.getUserData()?.name
+    }
 }
