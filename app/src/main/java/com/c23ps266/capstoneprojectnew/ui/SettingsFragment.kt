@@ -42,6 +42,7 @@ class SettingsFragment : Fragment() {
         setDarkMode()
         setLanguage()
         setLogout()
+        setDisplayUser()
     }
 
     private fun setLanguage() {
@@ -114,6 +115,11 @@ class SettingsFragment : Fragment() {
             intent.putExtra("DARK_MODE_CHANGED", true)
             requireActivity().setResult(Activity.RESULT_OK, intent)
         }
+    }
+
+    private fun setDisplayUser() {
+        binding.username.text = viewModel.getUserData()?.name
+        binding.email.text = viewModel.getUserData()?.email
     }
 
     private fun setLogout() {
