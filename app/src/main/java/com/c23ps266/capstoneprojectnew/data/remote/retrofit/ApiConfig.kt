@@ -9,10 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 // if more than one BASE_URL are needed, this might help: https://stackoverflow.com/a/55265180
 object ApiConfig {
-    /**
-     * Placeholder. TODO: get the API detail from CC
-     */
-    const val BASE_URL = "https://example.com"
+    const val BASE_URL = "https://calmind-33a00.et.r.appspot.com/objects/"
 
     fun getApiService(): ApiService {
         val clientBuilder = OkHttpClient.Builder()
