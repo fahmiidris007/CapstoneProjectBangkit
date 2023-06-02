@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
+import com.c23ps266.capstoneprojectnew.util.TextClassifierHelper
 import java.util.Locale
 
 
@@ -31,6 +32,7 @@ class HomeFragment : Fragment() {
     private var editor: SharedPreferences.Editor? = null
     private val REQUEST_CODE_SETTINGS = 1
     private val SPEECH_REC = 101
+    private lateinit var textClassifierHelper: TextClassifierHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +48,17 @@ class HomeFragment : Fragment() {
         sharedPref = requireActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE)
         val darkMode = sharedPref?.getBoolean("DARK_MODE", false) ?: false
         setDarkMode(darkMode)
-        setSearch()
-        setSpeech()
+
+        val modelDetail = TextClassifierHelper.ModelDetail(
+            modelFileName = "tflite_model_v3.2.tflite",
+            labelJsonFileName = "tflite_model_labels.json",
+            inputMaxLen = 32
+        )
+        textClassifierHelper = TextClassifierHelper(requireContext(), modelDetail) {
+            setSearch()
+            setSpeech()
+        }
+
         setDisplayName()
     }
 
@@ -56,8 +67,14 @@ class HomeFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null && query.trim() != "") {
-                    Toast.makeText(requireContext(), query.toString(), Toast.LENGTH_SHORT).show()
                     searchView.setQuery("", false)
+                    textClassifierHelper.classify(query.toString()) { result ->
+                        Toast.makeText(
+                            requireContext(),
+                            result.maxBy { it.score }.label,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 searchView.clearFocus()
                 return true
