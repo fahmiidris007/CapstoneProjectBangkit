@@ -60,6 +60,11 @@ class HomeFragment : Fragment() {
         }
 
         setDisplayName()
+
+        binding.btnPlay.setOnClickListener {
+            val intent = Intent(requireContext(), PlayerActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setSearch() {
