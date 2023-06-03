@@ -23,5 +23,13 @@
     <string name="library">Koleksi</string>
     <string name="title_library">Koleksi Suara</string>
     <string name="logout">Keluar</string>
+    <string name="previous_button">Previous Button</string>
+    <string name="play_pause_button">Play and Pause Button</string>
+    <string name="next_button">Tombol Selanjutnya</string>
+    <string name="back_button">Tombol Sebelumnya</string>
+    <string name="audio_playing">Suara Dimainkan</string>
+    <string name="audio_title">Judul Audio</string>
+    <string name="audio_paused">Audio Dijeda</string>
+    <string name="audio_player">Pemutar Audio</string>
 
 </resources>

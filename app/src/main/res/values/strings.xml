@@ -22,4 +22,12 @@
     <string name="library">Library</string>
     <string name="title_library">Audio Library</string>
     <string name="logout">Logout</string>
+    <string name="previous_button">Previous Button</string>
+    <string name="play_pause_button">Play and Pause Button</string>
+    <string name="next_button">Next Button</string>
+    <string name="back_button">Back Button</string>
+    <string name="audio_playing">Audio Playing</string>
+    <string name="audio_title">Audio Title</string>
+    <string name="audio_paused">Audio Paused</string>
+    <string name="audio_player">Audio Player</string>
 </resources>
