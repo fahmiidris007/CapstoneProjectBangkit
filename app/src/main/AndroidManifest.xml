@@ -16,19 +16,20 @@
         android:theme="@style/Theme.CapstoneProjectNew"
         tools:targetApi="31">
         <activity
+            android:name=".ui.PlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.LoginActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="false">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
