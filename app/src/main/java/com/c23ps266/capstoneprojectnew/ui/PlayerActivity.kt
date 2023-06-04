@@ -24,6 +24,10 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        intent.getStringExtra(EXTRA_AUDIO_URL)?.let {
+            // get audio url here
+        }
+
         setMediaPlayer()
         setSeekBar()
         setBackButton()
@@ -157,6 +161,10 @@ class PlayerActivity : AppCompatActivity() {
         if (this::mediaPlayer.isInitialized) {
             mediaPlayer.release()
         }
+    }
+
+    companion object {
+        const val EXTRA_AUDIO_URL = "extra_audio_url"
     }
 }
 
