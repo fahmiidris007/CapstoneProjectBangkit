@@ -54,11 +54,10 @@ class HomeFragment : Fragment() {
             labelJsonFileName = "tflite_model_labels.json",
             inputMaxLen = 32
         )
-        textClassifierHelper = TextClassifierHelper(requireContext(), modelDetail) {
-            setSearch()
-            setSpeech()
-        }
+        textClassifierHelper = TextClassifierHelper(modelDetail, requireContext())
 
+        setSearch()
+        setSpeech()
         setDisplayName()
 
         binding.btnPlay.setOnClickListener {
