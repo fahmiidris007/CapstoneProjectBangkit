@@ -40,6 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <ImageView
+            android:id="@+id/profile_picture"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"

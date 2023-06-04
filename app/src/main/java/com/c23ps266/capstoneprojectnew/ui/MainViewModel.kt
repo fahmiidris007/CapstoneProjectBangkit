@@ -15,6 +15,6 @@ class MainViewModel(
     fun submitEmotion(emotion: String) {
         emotionInput.value = emotion
     }
-    fun getUserData(): UserModel? = repository.getUser()?.run { UserModel(displayName, email) }
+    fun getUserData(): UserModel? = repository.getUser()?.run { UserModel(displayName, email, photoUrl) }
     fun signOut() = repository.signOut()
 }
