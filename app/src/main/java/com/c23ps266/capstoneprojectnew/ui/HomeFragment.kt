@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
 import com.c23ps266.capstoneprojectnew.util.TextClassifierHelper
 import java.util.Locale
@@ -25,9 +27,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by viewModels {
-        ViewModelFactory.getInstance(requireContext())
-    }
+    private val viewModel: MainViewModel by viewModels { ViewModelFactory.getInstance(requireContext()) }
     private var sharedPref: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
     private val REQUEST_CODE_SETTINGS = 1
@@ -68,17 +68,33 @@ class HomeFragment : Fragment() {
     }
 
     private fun setSearch() {
+        viewModel.submitStatus.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                RequestResult.Loading    -> {}
+
+                is RequestResult.Error   -> Toast.makeText(
+                    requireContext(), "Error: ${result.error}", Toast.LENGTH_SHORT
+                ).show()
+
+                is RequestResult.Success -> {
+                    val audioLinks = result.data
+                    val audio = audioLinks.random()
+                    val intent = Intent(requireContext(), PlayerActivity::class.java)
+                    intent.putExtra(PlayerActivity.EXTRA_AUDIO_URL, audio)
+                    startActivity(intent)
+                }
+            }
+        }
+
         val searchView = binding.searchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null && query.trim() != "") {
                     searchView.setQuery("", false)
                     textClassifierHelper.classify(query.toString()) { result ->
-                        Toast.makeText(
-                            requireContext(),
-                            result.maxBy { it.score }.label,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val emotion = result.maxBy { it.score }
+                        viewModel.submitEmotion(emotion.label)
+                        Log.d(TAG, "emotion: ${emotion.label} | ${emotion.score}")
                     }
                 }
                 searchView.clearFocus()
@@ -154,5 +170,9 @@ class HomeFragment : Fragment() {
 
     private fun setDisplayName() {
         binding.tvUsername.text = viewModel.getUserData()?.name
+    }
+
+    companion object {
+        const val TAG = "HomeFragment"
     }
 }
