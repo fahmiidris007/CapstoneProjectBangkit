@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.c23ps266.capstoneprojectnew.R
 import com.c23ps266.capstoneprojectnew.databinding.ListAudioBinding
 import com.c23ps266.capstoneprojectnew.model.AudioModel
+import com.c23ps266.capstoneprojectnew.util.createTimeLabel
 
 class ListAudioAdapter(private val listAudio: ArrayList<AudioModel>) :
     RecyclerView.Adapter<ListAudioAdapter.ListViewHolder>() {
@@ -18,7 +19,7 @@ class ListAudioAdapter(private val listAudio: ArrayList<AudioModel>) :
         fun bind(audio: AudioModel) {
             with(binding) {
                 tvTitle.text = audio.title
-                tvDuration.text = audio.durationMs.toString()
+                tvDuration.text = createTimeLabel(audio.durationMs)
             }
         }
     }
@@ -35,7 +36,6 @@ class ListAudioAdapter(private val listAudio: ArrayList<AudioModel>) :
         notifyDataSetChanged()
     }
 
-
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val audio = listAudio[position]
         holder.bind(audio)
@@ -44,9 +44,6 @@ class ListAudioAdapter(private val listAudio: ArrayList<AudioModel>) :
             setSelectedAudioIndex(position)
             val context = holder.itemView.context
             val intent = Intent(context, PlayerActivity::class.java).apply {
-                putExtra(PlayerActivity.EXTRA_AUDIO_TITLE, audio.title)
-                putExtra(PlayerActivity.EXTRA_AUDIO_DURATION, audio.durationMs)
-                putExtra(PlayerActivity.EXTRA_AUDIO_URL, audio.uriString)
                 putParcelableArrayListExtra(PlayerActivity.EXTRA_AUDIO_LIST, listAudio)
                 putExtra(PlayerActivity.EXTRA_SELECTED_AUDIO_INDEX, selectedAudioIndex)
             }
