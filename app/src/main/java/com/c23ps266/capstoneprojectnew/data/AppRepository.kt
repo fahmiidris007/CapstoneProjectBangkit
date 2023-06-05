@@ -6,10 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.data.remote.retrofit.ApiService
+import com.c23ps266.capstoneprojectnew.model.AudioModel
 import com.c23ps266.capstoneprojectnew.util.FirebaseAuthHelper
 import retrofit2.HttpException
 
-class AppRepository constructor(
+class AppRepository private constructor(
     private val apiService: ApiService,
     private val firebaseAuthHelper: FirebaseAuthHelper,
 ) {
@@ -17,17 +18,15 @@ class AppRepository constructor(
     val signOut = firebaseAuthHelper.auth::signOut
     fun getUser() = firebaseAuthHelper.auth.currentUser
 
-    fun submitEmotion(emotion: String): LiveData<RequestResult<List<String>>> = liveData {
+    fun submitEmotion(emotion: String): LiveData<RequestResult<List<AudioModel>>> = liveData {
         emit(RequestResult.Loading)
 
         try {
             val response = apiService.submitEmotion(emotion)
-            val data = response.toList()
-            if (data.isEmpty()) throw IllegalStateException("Invalid emotion")
+            val data = response.map { AudioModel(it.title, it.duration, it.link) }
+            if (data.isEmpty())
+                throw IllegalStateException("Invalid emotion")
             emitSource(MutableLiveData(RequestResult.Success(data)))
-        } catch (e: HttpException) {
-            Log.d(TAG, e.message.toString())
-            emit(RequestResult.Error(e.message.toString()))
         } catch (e: Exception) {
             Log.d(TAG, e.message.toString())
             emit(RequestResult.Error(e.message.toString()))

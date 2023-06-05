@@ -84,6 +84,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
 
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+
     // glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'
 }

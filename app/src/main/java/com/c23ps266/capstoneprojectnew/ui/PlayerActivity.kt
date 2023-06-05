@@ -2,12 +2,15 @@ package com.c23ps266.capstoneprojectnew.ui
 
 
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.c23ps266.capstoneprojectnew.R
 import com.c23ps266.capstoneprojectnew.databinding.ActivityPlayerBinding
+import com.c23ps266.capstoneprojectnew.model.AudioModel
 import java.util.concurrent.TimeUnit
 
 class PlayerActivity : AppCompatActivity() {
@@ -24,8 +27,16 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        intent.getStringExtra(EXTRA_AUDIO_URL)?.let {
-            // get audio url here
+        val audioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableArrayListExtra(EXTRA_AUDIO_URL, AudioModel::class.java)
+        } else {
+            intent.getParcelableArrayListExtra(EXTRA_AUDIO_URL)
+        }
+
+        audioData?.let {
+            // audio data exist. do something with the data here.
+        } ?: run {
+            // audio data does not exist. do something else here, or throw, or anything
         }
 
         setMediaPlayer()
