@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
 import com.c23ps266.capstoneprojectnew.model.AudioModel
@@ -34,6 +35,9 @@ class HomeFragment : Fragment() {
     private val REQUEST_CODE_SETTINGS = 1
     private val SPEECH_REC = 101
     private lateinit var textClassifierHelper: TextClassifierHelper
+    private lateinit var listAdapter: ListAudioAdapter
+    private val audioData = ArrayList<AudioModel>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +54,12 @@ class HomeFragment : Fragment() {
         val darkMode = sharedPref?.getBoolean("DARK_MODE", false) ?: false
         setDarkMode(darkMode)
 
+        listAdapter = ListAudioAdapter(audioData)
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = listAdapter
+        }
+
         val modelDetail = TextClassifierHelper.ModelDetail(
             modelFileName = "tflite_model_v3.2.tflite",
             labelJsonFileName = "tflite_model_labels.json",
@@ -61,10 +71,7 @@ class HomeFragment : Fragment() {
         setSpeech()
         setDisplayName()
 
-        binding.btnPlay.setOnClickListener {
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            startActivity(intent)
-        }
+
     }
 
     private fun setSearch() {
@@ -77,10 +84,10 @@ class HomeFragment : Fragment() {
                 ).show()
 
                 is RequestResult.Success -> {
-                    val audioData = ArrayList<AudioModel>().also { it.addAll(result.data) }
-                    val intent = Intent(requireContext(), PlayerActivity::class.java)
-                    intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_AUDIO_URL, audioData)
-                    startActivity(intent)
+                    audioData.clear()
+                    audioData.addAll(result.data)
+                    listAdapter.notifyDataSetChanged()
+
                 }
             }
         }
