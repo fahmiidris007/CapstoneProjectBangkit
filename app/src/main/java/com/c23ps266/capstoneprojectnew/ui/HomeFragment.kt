@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
@@ -54,7 +55,26 @@ class HomeFragment : Fragment() {
         val darkMode = sharedPref?.getBoolean("DARK_MODE", false) ?: false
         setDarkMode(darkMode)
 
-        listAdapter = ListAudioAdapter(audioData)
+        listAdapter = ListAudioAdapter(audioData, object : ListAudioAdapter.OnFavorite {
+            override fun onCheckFavorite(audio: AudioModel, callback: (result: Boolean) -> Unit) {
+                Log.d(TAG, "onCheckFavorite: ${audio.title}")
+                viewModel.isFavorited(audio.title).apply {
+                    observe(viewLifecycleOwner, callback)
+                    removeObserver(callback)
+                }
+            }
+
+            override fun onFavoriteClicked(isAlreadyFavorite: Boolean, audio: AudioModel): Boolean {
+                Log.d(TAG, "onFavoriteClicked")
+                return if (isAlreadyFavorite) {
+                    viewModel.removeFromFavorite(audio.title)
+                    false
+                } else {
+                    viewModel.addToFavorite(audio)
+                    true
+                }
+            }
+        })
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = listAdapter
@@ -86,8 +106,7 @@ class HomeFragment : Fragment() {
                 is RequestResult.Success -> {
                     audioData.clear()
                     audioData.addAll(result.data)
-                    listAdapter.notifyDataSetChanged()
-
+                    listAdapter.notifyItemRangeInserted(0, result.data.size)
                 }
             }
         }
