@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
+import com.c23ps266.capstoneprojectnew.model.AudioModel
 import com.c23ps266.capstoneprojectnew.util.TextClassifierHelper
 import java.util.Locale
 
@@ -76,10 +77,9 @@ class HomeFragment : Fragment() {
                 ).show()
 
                 is RequestResult.Success -> {
-                    val audioLinks = result.data
-                    val audio = audioLinks.random()
+                    val audioData = ArrayList<AudioModel>().also { it.addAll(result.data) }
                     val intent = Intent(requireContext(), PlayerActivity::class.java)
-                    intent.putExtra(PlayerActivity.EXTRA_AUDIO_URL, audio)
+                    intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_AUDIO_URL, audioData)
                     startActivity(intent)
                 }
             }
