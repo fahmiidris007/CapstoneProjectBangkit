@@ -7,6 +7,6 @@ object Injection {
     fun provideRepository() : AppRepository {
         val apiService = ApiConfig.getApiService()
         val firebaseAuthHelper = FirebaseAuthHelper.getInstance();
-        return AppRepository(apiService, firebaseAuthHelper)
+        return AppRepository.getInstance(apiService, firebaseAuthHelper)
     }
 }
