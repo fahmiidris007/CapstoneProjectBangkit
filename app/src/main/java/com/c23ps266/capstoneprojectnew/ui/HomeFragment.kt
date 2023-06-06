@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
@@ -90,8 +89,6 @@ class HomeFragment : Fragment() {
         setSearch()
         setSpeech()
         setDisplayName()
-
-
     }
 
     private fun setSearch() {
@@ -106,7 +103,7 @@ class HomeFragment : Fragment() {
                 is RequestResult.Success -> {
                     audioData.clear()
                     audioData.addAll(result.data)
-                    listAdapter.notifyItemRangeInserted(0, result.data.size)
+                    listAdapter.notifyDataSetChanged()
                 }
             }
         }
