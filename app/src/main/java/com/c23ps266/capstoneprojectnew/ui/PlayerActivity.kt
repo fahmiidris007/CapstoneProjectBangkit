@@ -4,6 +4,7 @@ package com.c23ps266.capstoneprojectnew.ui
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.c23ps266.capstoneprojectnew.R
@@ -71,6 +72,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         mediaPlayer.setOnPreparedListener {
+            setLoading(false)
             binding.seekBar.max = mediaPlayer.duration
             binding.totalTime.text = createTimeLabel(mediaPlayer.duration)
             binding.audioTitle.text = audioList[currentAudioIndex].title
@@ -86,9 +88,10 @@ class PlayerActivity : AppCompatActivity() {
 
 
     private fun prepareMediaPlayer() {
+        setLoading(true)
         mediaPlayer.reset()
         mediaPlayer.setDataSource(audioList[currentAudioIndex].uriString)
-        mediaPlayer.prepare()
+        mediaPlayer.prepareAsync()
         binding.seekBar.progress = 0
         binding.elapsedTime.text = createTimeLabel(0)
     }
@@ -179,11 +182,18 @@ class PlayerActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null)
     }
 
+    private fun setLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.pbPlayerLoading.visibility = View.VISIBLE
+            binding.animationView.visibility = View.INVISIBLE
+        } else {
+            binding.pbPlayerLoading.visibility = View.INVISIBLE
+            binding.animationView.visibility = View.VISIBLE
+        }
+    }
+
     companion object {
         const val EXTRA_AUDIO_LIST = "extra_audio_list"
         const val EXTRA_SELECTED_AUDIO_INDEX = "extra_selected_audio_index"
     }
 }
-
-
-

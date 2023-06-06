@@ -37,6 +37,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/audio_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,6 +144,16 @@
             android:textSize="14sp" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_playerLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/animation_view"
+        app:layout_constraintEnd_toEndOf="@+id/animation_view"
+        app:layout_constraintStart_toStartOf="@+id/animation_view"
+        app:layout_constraintTop_toTopOf="@+id/animation_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
