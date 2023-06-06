@@ -92,29 +92,29 @@ class TextClassifierHelper : DefaultLifecycleObserver {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
     }
 
-    fun classify(message: String, onResult: (result: List<Category>) -> Unit) =
-        CoroutineScope(Dispatchers.Default).launch {
-            if (initJob.isActive) {
-                Log.i(TAG, "waiting for init job to complete...")
-                initJob.join()
-            }
-
-            val inputs = message
-            val outputs: Array<FloatArray> = arrayOf(FloatArray(labels.size))
-            interpreter.run(inputs, outputs)
-
-            val results = outputs[0].mapIndexed { index, fl ->
-                Category(labels[index], fl)
-            }
-            CoroutineScope(Dispatchers.Main).launch { onResult(results) }
+    fun classify(message: String, onClassify: OnClassify) = CoroutineScope(Dispatchers.Default).launch {
+        if (initJob.isActive) {
+            Log.i(TAG, "waiting for init job to complete...")
+            initJob.join()
         }
 
-    data class ModelDetail(
-        val modelFileName: String,
-        val labelJsonFileName: String,
-        val inputMaxLen: Int,
-    )
+        val inputs = message
+        val outputs: Array<FloatArray> = arrayOf(FloatArray(labels.size))
 
+        try {
+            // NOTE: For unknown reason, if the first input is just one word, this call to run will fail.
+            // This will fail continuously if the next inputs are also consists of only one word.
+            // However, if the word is appended by space, this somehow works, then the subsequent
+            // call will success even if the input is just one word. What a weird behavior.
+            interpreter.run(inputs + " ", outputs)      // workaround
+
+            val results = outputs[0].mapIndexed { index, fl -> Category(labels[index], fl) }
+            CoroutineScope(Dispatchers.Main).launch { onClassify.onResult(results) }
+        } catch (e: Exception) {
+            CoroutineScope(Dispatchers.Main).launch { onClassify.onFailure(e.message.toString()) }
+            Log.d(TAG, "classify failure: ${e.message}")
+        }
+    }
 
     override fun onDestroy(owner: LifecycleOwner) {
         if (!initJob.isCompleted) {
@@ -123,6 +123,17 @@ class TextClassifierHelper : DefaultLifecycleObserver {
             owner.lifecycle.removeObserver(this)
         }
     }
+
+    interface OnClassify {
+        fun onResult(results: List<Category>)
+        fun onFailure(message: String)
+    }
+
+    data class ModelDetail(
+        val modelFileName: String,
+        val labelJsonFileName: String,
+        val inputMaxLen: Int,
+    )
 
     companion object {
         private const val TAG = "TextClassifierHelper"

@@ -22,6 +22,7 @@ import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
 import com.c23ps266.capstoneprojectnew.model.AudioModel
 import com.c23ps266.capstoneprojectnew.util.TextClassifierHelper
+import org.tensorflow.lite.support.label.Category
 import java.util.Locale
 
 
@@ -111,14 +112,26 @@ class HomeFragment : Fragment() {
         val searchView = binding.searchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null && query.trim() != "") {
-                    searchView.setQuery("", false)
-                    textClassifierHelper.classify(query.toString()) { result ->
-                        val emotion = result.maxBy { it.score }
+                if (query == null || query.trim() == "")
+                    return true
+
+                textClassifierHelper.classify(query.toString(), object : TextClassifierHelper.OnClassify {
+                    override fun onResult(results: List<Category>) {
+                        val emotion = results.maxBy { it.score }
                         viewModel.submitEmotion(emotion.label)
-                        Log.d(TAG, "emotion: ${emotion.label} | ${emotion.score}")
+                        Log.d(TAG, "emotions: ${results.map { "\n${it.score } | ${it.label}" }}")
                     }
-                }
+
+                    override fun onFailure(message: String) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Failed to process data. Please try again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+
+                searchView.setQuery("", false)
                 searchView.clearFocus()
                 return true
             }
