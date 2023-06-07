@@ -1,13 +1,13 @@
-package com.c23ps266.capstoneprojectnew.ui
+package com.c23ps266.capstoneprojectnew.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.c23ps266.capstoneprojectnew.R
 import com.c23ps266.capstoneprojectnew.databinding.ListAudioBinding
 import com.c23ps266.capstoneprojectnew.model.AudioModel
+import com.c23ps266.capstoneprojectnew.ui.PlayerActivity
 import com.c23ps266.capstoneprojectnew.util.createTimeLabel
 
 class ListAudioAdapter(
@@ -26,13 +26,13 @@ class ListAudioAdapter(
 
         with(holder.binding) {
             root.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, PlayerActivity::class.java).apply {
-                putParcelableArrayListExtra(PlayerActivity.EXTRA_AUDIO_LIST, listAudio)
-                putExtra(PlayerActivity.EXTRA_SELECTED_AUDIO_INDEX, position)
+                val context = holder.itemView.context
+                val intent = Intent(context, PlayerActivity::class.java).apply {
+                    putParcelableArrayListExtra(PlayerActivity.EXTRA_AUDIO_LIST, listAudio)
+                    putExtra(PlayerActivity.EXTRA_SELECTED_AUDIO_INDEX, position)
+                }
+                context.startActivity(intent)
             }
-            context.startActivity(intent)
-        }
             tvTitle.text = audio.title
             tvDuration.text = createTimeLabel(audio.durationMs)
 
