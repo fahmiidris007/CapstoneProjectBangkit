@@ -18,6 +18,8 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.c23ps266.capstoneprojectnew.R
 import com.c23ps266.capstoneprojectnew.databinding.FragmentSettingsBinding
+import com.c23ps266.capstoneprojectnew.viewmodel.MainViewModel
+import com.c23ps266.capstoneprojectnew.viewmodel.ViewModelFactory
 import java.util.Locale
 
 class SettingsFragment : Fragment() {
