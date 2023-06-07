@@ -1,4 +1,4 @@
-package com.c23ps266.capstoneprojectnew.ui
+package com.c23ps266.capstoneprojectnew.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

@@ -31,5 +31,6 @@
     <string name="audio_title">Judul Audio</string>
     <string name="audio_paused">Audio Dijeda</string>
     <string name="audio_player">Pemutar Audio</string>
+    <string name="no_data">Tidak Ada Data</string>
 
 </resources>

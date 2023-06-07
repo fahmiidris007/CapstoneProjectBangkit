@@ -2,11 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.CapstoneProjectNew" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/cold_black</item>
+        <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryVariant">@color/ice_black</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/cold_black</item>
+        <item name="colorSecondary">@color/orange</item>
         <item name="colorSecondaryVariant">@color/ice_black</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->

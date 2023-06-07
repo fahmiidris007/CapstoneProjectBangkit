@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.c23ps266.capstoneprojectnew.databinding.ActivityLoginBinding
+import com.c23ps266.capstoneprojectnew.viewmodel.LoginViewModel
+import com.c23ps266.capstoneprojectnew.viewmodel.ViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding

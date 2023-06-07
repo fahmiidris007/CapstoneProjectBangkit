@@ -26,18 +26,6 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val audioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            intent.getParcelableArrayListExtra(EXTRA_AUDIO_URL, AudioModel::class.java)
-//        } else {
-//            intent.getParcelableArrayListExtra(EXTRA_AUDIO_URL)
-//        }
-//
-//        audioData?.let {
-//            // audio data exist. do something with the data here.
-//        } ?: run {
-//            // audio data does not exist. do something else here, or throw, or anything
-//        }
-
         selectedAudioIndex = intent.getIntExtra(EXTRA_SELECTED_AUDIO_INDEX, -1)
         audioList = intent.getParcelableArrayListExtra(EXTRA_AUDIO_LIST) ?: ArrayList()
 

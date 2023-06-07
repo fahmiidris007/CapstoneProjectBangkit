@@ -18,10 +18,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.c23ps266.capstoneprojectnew.adapter.ListAudioAdapter
+import com.c23ps266.capstoneprojectnew.data.local.AudioListCache
 import com.c23ps266.capstoneprojectnew.data.remote.RequestResult
 import com.c23ps266.capstoneprojectnew.databinding.FragmentHomeBinding
 import com.c23ps266.capstoneprojectnew.model.AudioModel
 import com.c23ps266.capstoneprojectnew.util.TextClassifierHelper
+import com.c23ps266.capstoneprojectnew.viewmodel.MainViewModel
+import com.c23ps266.capstoneprojectnew.viewmodel.ViewModelFactory
 import org.tensorflow.lite.support.label.Category
 import java.util.Locale
 
@@ -39,7 +43,6 @@ class HomeFragment : Fragment() {
     private lateinit var listAdapter: ListAudioAdapter
     private val audioData = ArrayList<AudioModel>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +58,15 @@ class HomeFragment : Fragment() {
         val darkMode = sharedPref?.getBoolean("DARK_MODE", false) ?: false
         setDarkMode(darkMode)
 
+        setListAdapter()
+        newList()
+        setModel()
+        setSearch()
+        setSpeech()
+        setDisplayName()
+    }
+
+    private fun setListAdapter() {
         listAdapter = ListAudioAdapter(audioData, object : ListAudioAdapter.OnFavorite {
             override fun onCheckFavorite(audio: AudioModel, callback: (result: Boolean) -> Unit) {
                 Log.d(TAG, "onCheckFavorite: ${audio.title}")
@@ -79,32 +91,38 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = listAdapter
         }
+        if (AudioListCache.getAudioList().isNotEmpty()) {
+            binding.animationView2.visibility = View.GONE
+        }
+    }
 
+    private fun setModel() {
         val modelDetail = TextClassifierHelper.ModelDetail(
             modelFileName = "tflite_model_v3.2.tflite",
             labelJsonFileName = "tflite_model_labels.json",
             inputMaxLen = 32
         )
         textClassifierHelper = TextClassifierHelper(modelDetail, requireContext())
-
-        setSearch()
-        setSpeech()
-        setDisplayName()
     }
 
     private fun setSearch() {
         viewModel.submitStatus.observe(viewLifecycleOwner) { result ->
             when (result) {
-                RequestResult.Loading    -> {}
+                RequestResult.Loading -> {
+                    binding.animationView2.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
 
-                is RequestResult.Error   -> Toast.makeText(
+                is RequestResult.Error -> Toast.makeText(
                     requireContext(), "Error: ${result.error}", Toast.LENGTH_SHORT
                 ).show()
 
                 is RequestResult.Success -> {
+                    binding.progressBar.visibility = View.GONE
                     audioData.clear()
                     audioData.addAll(result.data)
                     listAdapter.notifyDataSetChanged()
+                    AudioListCache.setAudioList(result.data as ArrayList<AudioModel>)
                 }
             }
         }
@@ -115,21 +133,23 @@ class HomeFragment : Fragment() {
                 if (query == null || query.trim() == "")
                     return true
 
-                textClassifierHelper.classify(query.toString(), object : TextClassifierHelper.OnClassify {
-                    override fun onResult(results: List<Category>) {
-                        val emotion = results.maxBy { it.score }
-                        viewModel.submitEmotion(emotion.label)
-                        Log.d(TAG, "emotions: ${results.map { "\n${it.score } | ${it.label}" }}")
-                    }
+                textClassifierHelper.classify(
+                    query.toString(),
+                    object : TextClassifierHelper.OnClassify {
+                        override fun onResult(results: List<Category>) {
+                            val emotion = results.maxBy { it.score }
+                            viewModel.submitEmotion(emotion.label)
+                            Log.d(TAG, "emotions: ${results.map { "\n${it.score} | ${it.label}" }}")
+                        }
 
-                    override fun onFailure(message: String) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Failed to process data. Please try again.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
+                        override fun onFailure(message: String) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Failed to process data. Please try again.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
 
                 searchView.setQuery("", false)
                 searchView.clearFocus()
@@ -168,6 +188,16 @@ class HomeFragment : Fragment() {
                 startActivityForResult(intent, SPEECH_REC)
             }
         }
+    }
+
+    fun updateList(audioData: ArrayList<AudioModel>) {
+        newList()
+    }
+
+    private fun newList() {
+        audioData.clear()
+        audioData.addAll(AudioListCache.getAudioList())
+        listAdapter.notifyDataSetChanged()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
