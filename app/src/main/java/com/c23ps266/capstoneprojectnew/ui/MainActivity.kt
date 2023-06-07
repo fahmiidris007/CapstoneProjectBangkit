@@ -18,15 +18,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Periksa apakah AudioListCache sudah berisi data
+        setNavigationTabs()
+        checkList()
+    }
+
+    private fun checkList() {
         if (AudioListCache.getAudioList().isEmpty()) {
-            // Jika tidak ada data, lakukan pengambilan data pertama kali
         } else {
-            // Jika sudah ada data, perbarui tampilan menggunakan data yang ada di AudioListCache
             val audioData = AudioListCache.getAudioList()
             updateList(audioData)
         }
-        setNavigationTabs()
     }
 
     private fun updateList(audioData: ArrayList<AudioModel>) {
