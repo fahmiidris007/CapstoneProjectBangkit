@@ -36,8 +36,9 @@ class FirebaseAuthHelper private constructor() {
             .build()
         val googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        val resultLauncherKey = "signin"
         val resultLauncher = activityResultRegistry.register(
-            "signin", activity, StartActivityForResult()
+            resultLauncherKey, activity, StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)

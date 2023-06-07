@@ -54,8 +54,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPref = requireActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE)
-        val darkMode = sharedPref?.getBoolean("DARK_MODE", false) ?: false
+        sharedPref = requireActivity().getSharedPreferences(SettingsFragment.PREF_DARK_MODE_NAME, Context.MODE_PRIVATE)
+        val darkMode = sharedPref?.getBoolean(SettingsFragment.PREF_DARK_MODE_KEY, false) ?: false
         setDarkMode(darkMode)
 
         setListAdapter()
@@ -209,16 +209,16 @@ class HomeFragment : Fragment() {
         }
 
         if (requestCode == REQUEST_CODE_SETTINGS && resultCode == Activity.RESULT_OK) {
-            val darkModeChanged = data?.getBooleanExtra("DARK_MODE_CHANGED", false) ?: false
+            val darkModeChanged = data?.getBooleanExtra(SettingsFragment.EXTRA_DARK_MODE_CHANGED, false) ?: false
             if (darkModeChanged) {
-                val darkMode = sharedPref?.getBoolean("DARK_MODE", false) ?: false
+                val darkMode = sharedPref?.getBoolean(SettingsFragment.PREF_DARK_MODE_KEY, false) ?: false
                 editor = sharedPref?.edit()
-                editor?.putBoolean("DARK_MODE", !darkMode)
+                editor?.putBoolean(SettingsFragment.PREF_DARK_MODE_KEY, !darkMode)
                 editor?.apply()
 
                 setDarkMode(!darkMode)
             }
-            val languageChanged = data?.getBooleanExtra("LANGUAGE_CHANGED", false) ?: false
+            val languageChanged = data?.getBooleanExtra(SettingsFragment.EXTRA_LANGUAGE_CHANGED, false) ?: false
             if (languageChanged) {
                 requireActivity().recreate()
             }

@@ -55,7 +55,7 @@ class SettingsFragment : Fragment() {
         }
         val currentLocale = resources.configuration.locale
         val currentLanguage = currentLocale.language
-        if (currentLanguage == "in") {
+        if (currentLanguage == LANGUAGE_INDONESIAN) {
             binding.language.text = getString(R.string.language)
             binding.english.text = getString(R.string.indonesia)
         } else {
@@ -69,7 +69,7 @@ class SettingsFragment : Fragment() {
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.select_language)).setItems(languages) { _, which ->
-            val selectedLanguage = if (which == 0) "en" else "in"
+            val selectedLanguage = if (which == 0) LANGUAGE_ENGLISH else LANGUAGE_INDONESIAN
             setAppLanguage(selectedLanguage)
         }.setNegativeButton(getString(R.string.cancel), null).show()
     }
@@ -85,15 +85,15 @@ class SettingsFragment : Fragment() {
 
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("LANGUAGE_CHANGED", true)
+        intent.putExtra(EXTRA_LANGUAGE_CHANGED, true)
         startActivity(intent)
         requireActivity().finish()
     }
 
     private fun setDarkMode() {
         modeSwitch = binding.modeSwitch
-        sharedPref = requireActivity().getSharedPreferences("MODE", Context.MODE_PRIVATE)
-        darkMode = sharedPref?.getBoolean("DARK_MODE", false)!!
+        sharedPref = requireActivity().getSharedPreferences(PREF_DARK_MODE_NAME, Context.MODE_PRIVATE)
+        darkMode = sharedPref?.getBoolean(PREF_DARK_MODE_KEY, false)!!
         if (darkMode) {
             modeSwitch.isChecked = true
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -101,19 +101,19 @@ class SettingsFragment : Fragment() {
             modeSwitch.isChecked = false
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-        modeSwitch.setOnCheckedChangeListener { _, state ->
+        modeSwitch.setOnCheckedChangeListener { _, _ ->
             if (darkMode) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editor = sharedPref?.edit()
-                editor?.putBoolean("DARK_MODE", false)
+                editor?.putBoolean(PREF_DARK_MODE_KEY, false)
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 editor = sharedPref?.edit()
-                editor?.putBoolean("DARK_MODE", true)
+                editor?.putBoolean(PREF_DARK_MODE_KEY, true)
             }
             editor?.apply()
             val intent = Intent()
-            intent.putExtra("DARK_MODE_CHANGED", true)
+            intent.putExtra(EXTRA_DARK_MODE_CHANGED, true)
             requireActivity().setResult(Activity.RESULT_OK, intent)
         }
     }
@@ -143,5 +143,11 @@ class SettingsFragment : Fragment() {
 
     companion object {
         const val TAG = "SettingsFragment"
+        const val PREF_DARK_MODE_NAME = "MODE"
+        const val PREF_DARK_MODE_KEY = "DARK_MODE"
+        const val EXTRA_DARK_MODE_CHANGED = "DARK_MODE_CHANGED"
+        const val EXTRA_LANGUAGE_CHANGED = "LANGUAGE_CHANGED"
+        private const val LANGUAGE_INDONESIAN = "in"
+        private const val LANGUAGE_ENGLISH = "en"
     }
 }
