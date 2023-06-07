@@ -205,7 +205,7 @@ class HomeFragment : Fragment() {
         if ((requestCode == SPEECH_REC) && (resultCode == Activity.RESULT_OK) && (data != null)) {
             val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
             val searchView = binding.searchView
-            searchView.setQuery(result?.get(0), false)
+            searchView.setQuery(result?.get(0), true)
         }
 
         if (requestCode == REQUEST_CODE_SETTINGS && resultCode == Activity.RESULT_OK) {
