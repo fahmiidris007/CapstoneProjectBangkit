@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.SeekBar
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.c23ps266.capstoneprojectnew.R
 import com.c23ps266.capstoneprojectnew.databinding.ActivityPlayerBinding
 import com.c23ps266.capstoneprojectnew.model.AudioModel
 import com.c23ps266.capstoneprojectnew.util.createTimeLabel
+import com.c23ps266.capstoneprojectnew.viewmodel.MainViewModel
+import com.c23ps266.capstoneprojectnew.viewmodel.ViewModelFactory
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var mediaPlayer: MediaPlayer
@@ -19,6 +22,7 @@ class PlayerActivity : AppCompatActivity() {
     private var currentAudioIndex: Int = 0
     private var selectedAudioIndex: Int = -1
     private lateinit var audioList: ArrayList<AudioModel>
+    private val viewModel: MainViewModel by viewModels { ViewModelFactory.getInstance(this) }
     private var handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +36,7 @@ class PlayerActivity : AppCompatActivity() {
         setMediaPlayer()
         setSeekBar()
         setBackButton()
+        setFavoriteButton()
     }
 
     private fun setMediaPlayer() {
@@ -113,6 +118,7 @@ class PlayerActivity : AppCompatActivity() {
         pauseAudio()
         prepareMediaPlayer()
         playAudio()
+        setFavoriteButton()
     }
 
     private fun playPreviousAudio() {
@@ -123,6 +129,7 @@ class PlayerActivity : AppCompatActivity() {
         pauseAudio()
         prepareMediaPlayer()
         playAudio()
+        setFavoriteButton()
     }
 
 
@@ -177,6 +184,29 @@ class PlayerActivity : AppCompatActivity() {
         } else {
             binding.pbPlayerLoading.visibility = View.INVISIBLE
             binding.animationView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setFavoriteButton() {
+        viewModel.isFavorited(audioList[currentAudioIndex].title).observe(
+            this
+        ) { favorite ->
+            if (favorite != null) {
+                if (favorite) {
+                    binding.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+                    binding.favoriteButton.setOnClickListener {
+                        viewModel.removeFromFavorite(audioList[currentAudioIndex].title)
+                        binding.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    }
+                } else {
+                    binding.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    binding.favoriteButton.setOnClickListener {
+                        viewModel.addToFavorite(audioList[currentAudioIndex])
+                        binding.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+                    }
+                }
+            }
+
         }
     }
 
