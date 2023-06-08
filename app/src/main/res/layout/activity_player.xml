@@ -2,20 +2,20 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BackgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/BackgroundColor"
     tools:context=".ui.PlayerActivity">
 
     <TextView
         android:id="@+id/tv1"
+        style="@style/ToolbarTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/audio_player"
-        style="@style/ToolbarTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/audio_title"
+        app:layout_constraintBottom_toTopOf="@+id/titleLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv1"
@@ -46,18 +46,36 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/panda" />
 
-    <TextView
-        android:id="@+id/audio_title"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/titleLinearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="@string/audio_title"
-        style="@style/Text"
-        android:textSize="18sp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/seekBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/audio_title"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/audio_title"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/favoriteButton"
+            style="@style/BackgroundColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/favorite"
+            android:src="@drawable/ic_baseline_favorite_border_24" />
+    </LinearLayout>
+
 
     <SeekBar
         android:id="@+id/seekBar"
@@ -66,8 +84,8 @@
         android:layout_marginBottom="20dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:progressTint="@color/orange"
         android:progressBackgroundTint="@color/orange"
+        android:progressTint="@color/orange"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -76,9 +94,9 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="50dp"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -95,11 +113,11 @@
             android:id="@+id/playPauseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
-            android:onClick="onPlayPauseClick"
             android:backgroundTint="@color/cream"
 
-            android:layout_marginHorizontal="16dp"
+            android:onClick="onPlayPauseClick"
             android:src="@drawable/ic_baseline_play_arrow_24" />
 
         <ImageButton
@@ -117,10 +135,10 @@
         android:id="@+id/timeLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
