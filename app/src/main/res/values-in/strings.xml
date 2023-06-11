@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">callMind</string>
+    <string name="app_name">CalMind</string>
     <string name="settings">Pengaturan</string>
     <string name="fahmi_idris">Fahmi Idris</string>
     <string name="fahmiidris_apps_ipb_ac_id">fahmiidris@apps.ipb.ac.id</string>
