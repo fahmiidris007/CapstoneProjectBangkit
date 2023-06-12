@@ -5,7 +5,5 @@ instance_class: F1
 
 network:
   session_affinity: true
-  forwarded_ports:
-    - 3000
 
 entrypoint: node src/server.js
