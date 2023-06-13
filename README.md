@@ -1,8 +1,12 @@
-# Guide to Run the Model in Your Machine
+# Guide about our Model in Your Machine
 
-Here are the guide to run the model on your own. We recommend you to use Google Colab as it will makes data import easier and probably speeds up training speed.
-1. Download the ipynb files.
-2. Open Google Colab.
-3. Upload the model into the Google Colab.
-4. As the data is available online, you don't need to download the dataset manually.
-5. Run the model on Google Colab.
+Here are the guide regarding our model. 
+
+Requirements
+Libraries: TensorFlow, JSON, NLTK, SKLearn, and NumPy (for testing)
+Internet (to import data online)
+
+We recommend you to use Google Colab as it already have the required libraries.
+1. Open the Source.ipynb for interactive python notebook or Source.py for python script
+2. As the data is available online, you don't need to download the dataset manually.
+3. Run the script (it will generate labels.json and the model in form of .tflite)
