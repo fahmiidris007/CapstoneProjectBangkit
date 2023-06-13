@@ -40,7 +40,3 @@ Follow the steps below to clone the CapstoneProjectBangkit repository and run it
 5. Wait for a few moments, and the app will be up and running on the emulator or connected device.
 
 Now you can explore and test the app's features.
-
-If you encounter any issues or have further questions, please feel free to reach out for assistance.
-
-Thank you!
