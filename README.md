@@ -2,11 +2,11 @@
 
 Here are the guide regarding our model. 
 
-Requirements
-Libraries: TensorFlow, JSON, NLTK, SKLearn, and NumPy (for testing)
-Internet (to import data online)
+Required libraries: TensorFlow, JSON, NLTK, SKLearn, and NumPy (for testing)
+
+(Note: The data is available online thus will import automatically instead of import manually.)
 
 We recommend you to use Google Colab as it already have the required libraries.
 1. Open the Source.ipynb for interactive python notebook or Source.py for python script
-2. As the data is available online, you don't need to download the dataset manually.
-3. Run the script (it will generate labels.json and the model in form of .tflite)
+2. Run the script.
+3. It will generate labels.json (for the labels) and the model in .tflite format
