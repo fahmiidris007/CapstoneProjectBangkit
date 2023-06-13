@@ -1,4 +1,4 @@
-# Guide to Cloning and Running Capstone Project Bangkit App in Android Studio
+# Guide to Cloning and Running CalMind App in Android Studio
 
 This guide will walk you through the step-by-step process of cloning the repository directly in Android Studio and running it on the emulator.
 
